@@ -1,30 +1,29 @@
 <div>
-    <form>
-        <select [(ngModel)]="selection" (change)="selected()" name="selection">
+    <form [formGroup]="planetForm" (ngSubmit)="addMyPlanet()">
+        <select formControlName="selection" (change)="selected()" name="selection">
             <!-- for view in views { -->
             <option *ngFor="let view of views" [ngValue]="view"> {{view}} </option>
             <!-- } -->
         </select>
 
         <br>
-        <input type="text" [(ngModel)]="formPlanetName" name="formPlanetName" placeholder="Planet Name">
-        {{formPlanetName}}
+        <input type="text" formControlName="planetName" name="formPlanetName" placeholder="Planet Name">
 
         <br>
-        <input type="text" name="formPlanetColor" placeholder="Color">
+        <input type="text" formControlName="planetColor" name="formPlanetColor" placeholder="Color">
 
         <br>
-        <input type="text" name="formPlanetRadius" placeholder="Radius">
+        <input type="text" formControlName="planetRadius" name="formPlanetRadius" placeholder="Radius">
 
         <br>
-        <input type="text" name="formPlanetSat" placeholder="Satellites">
+        <input type="text" formControlName="planetSat" name="formPlanetSat" placeholder="Satellites">
 
         <br>
 
-        <button (click)="addMyPlanet()">Add Planet</button>
+        <button type="submit" [disabled]="!planetForm.valid">Add Planet</button>
     </form>
     <!-- switch (selection) { -->
-    <div [ngSwitch]="selection">
+    <div [ngSwitch]="selectedValue">
         <h2>Total Planets: {{ getTotalPlanets() }}</h2>
 
         <!-- List View -->
