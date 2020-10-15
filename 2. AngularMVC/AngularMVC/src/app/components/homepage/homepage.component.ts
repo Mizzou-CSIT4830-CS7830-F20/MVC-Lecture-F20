@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import { PlanetModelService } from 'src/app/services/planet-model.service';
 
-import planets from 'src/assets/planetData.json';
-import { Planets } from 'src/app/types/planets';
-
 import { FormBuilder, Validators } from '@angular/forms';
+
+import { Planets } from 'src/app/types/planets';
 
 @Component({
   selector: 'app-homepage',
@@ -13,11 +12,14 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./homepage.component.css'],
 })
 export class HomepageComponent implements OnInit {
+  // this is my controller
+
   selectedValue: string;
 
   views = ['Select One', 'list', 'table', 'system', 'all'];
 
-  data: Array<Planets> = planets;
+  // model should have data, methods that manipulate the data
+  data: Array<Planets>;
 
   planetForm = this.fb.group({
     selection: [''],
@@ -29,6 +31,7 @@ export class HomepageComponent implements OnInit {
 
   constructor(private model: PlanetModelService, private fb: FormBuilder) {
     this.planetForm.controls.selection.setValue('Select One');
+    this.data = model.getData();
   }
 
   ngOnInit(): void {}
@@ -39,19 +42,26 @@ export class HomepageComponent implements OnInit {
   }
 
   addMyPlanet() {
-    this.data.push({
+    // this.data.push({
+    //   name: this.planetForm.value.planetName,
+    //   color: this.planetForm.value.planetColor,
+    //   radius: this.planetForm.value.planetRadius,
+    //   satellites: this.planetForm.value.planetSat,
+    // });
+
+    this.data = this.model.addData({
       name: this.planetForm.value.planetName,
       color: this.planetForm.value.planetColor,
       radius: this.planetForm.value.planetRadius,
       satellites: this.planetForm.value.planetSat,
     });
 
-    console.log(this.data);
+    // console.log(this.data);
 
     this.planetForm.reset();
   }
 
   getTotalPlanets() {
-    return this.data.length;
+    return this.model.getTotalPlanets();
   }
 }
